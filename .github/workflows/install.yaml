@@ -1,0 +1,23 @@
+name: Log Kubernetes Resources
+
+on:
+  push:
+
+jobs:
+  log-k8s-resources:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v1
+      with:
+        version: 'latest'
+
+    - name: Load kubeconfig
+      run: echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+
+    - name: Log all resources in the cluster
+      run: kubectl get all --all-namespaces
