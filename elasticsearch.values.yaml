@@ -393,7 +393,7 @@ ingress:
           pathType: Prefix    # This is required in newer K8s versions
           backend:
             service:
-              name: elastic-search-kibanasvc
+              name: elastic-search-kibana
               port:
                 name: http
   ##
