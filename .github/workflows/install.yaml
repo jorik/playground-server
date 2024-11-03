@@ -55,6 +55,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
       - uses: azure/k8s-set-context@v4
         with:
           method: kubeconfig
@@ -64,7 +67,7 @@ jobs:
         run: |
           helm upgrade --install elastic-search \
             --namespace default \
-            --values ./elasticsearch.values.yaml \
+            --values elasticsearch.values.yaml \
             --wait \
             --atomic \
             oci://registry-1.docker.io/bitnamicharts/elasticsearch
