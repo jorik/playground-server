@@ -297,11 +297,11 @@ ingress:
   apiVersion: ""
   ## @param ingress.hostname Default host for the ingress record
   ##
-  hostname: "elasticsearch-hidden.wubwub.nl"
+  hostname: ""
   ## @param ingress.path Default path for the ingress record
   ## NOTE: You may need to set this to '/*' in order to use this with ALB ingress controllers
   ##
-  path: /es
+  path: "/"
   ## @param ingress.annotations Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
   ## Use this parameter to set the required annotations for cert-manager, see
   ## ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
@@ -386,14 +386,16 @@ ingress:
   ##             name: http
   ##
   extraRules:
-    - host: kibana.wubwub.nl
-      http:
-        path: /
-        backend:
-          service:
-            name: elastic-search-kibanasvc
-            port:
-              name: http
+  - host: kibana.wubwub.nl
+    http:
+      paths:
+        - path: /
+          pathType: Prefix    # This is required in newer K8s versions
+          backend:
+            service:
+              name: elastic-search-kibanasvc
+              port:
+                name: http
   ##
 ## @section Master-elegible nodes parameters
 master:
