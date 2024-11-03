@@ -60,12 +60,11 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBECONFIG }}
 
-      - name: Install CloudNative PG
+      - name: Install Elastic Searcs
         run: |
           helm upgrade -- install elastic-search \
             --namespace default \
             --values ./elasticsearch.values.yaml \
             --wait \
             --atomic \
-          oci://registry-1.docker.io/bitnamicharts/elasticsearch
-      
+            oci://registry-1.docker.io/bitnamicharts/elasticsearch
