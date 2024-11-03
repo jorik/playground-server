@@ -4,14 +4,14 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Allow manual triggering
+  workflow_dispatch: # Allow manual triggering
 jobs:
   create_pull_secrets:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         namespace: [default, ada]
-      fail-fast: false  # Continue with other namespaces if one fails
+      fail-fast: false # Continue with other namespaces if one fails
 
     steps:
       - uses: azure/k8s-set-context@v4
@@ -24,7 +24,8 @@ jobs:
             --docker-server=ghcr.io \
             --docker-username=${{ github.actor }} \
             --docker-password=${{ secrets.GHRC_PULL_TOKEN }} \
-            --namespace ${{ matrix.namespace }}
+            --namespace ${{ matrix.namespace }} \
+            --dry-run=client -o yaml | kubectl apply -f -
 
   deploy_pg_native:
     runs-on: ubuntu-latest
