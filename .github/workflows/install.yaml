@@ -23,7 +23,7 @@ jobs:
           kubectl create secret docker-registry docker-pull-secret \
             --docker-server=ghcr.io \
             --docker-username=${{ github.actor }} \
-            --docker-password=${{ secrets.GHRC_PULL_TOKEN }}
+            --docker-password=${{ secrets.GHRC_PULL_TOKEN }} \
             --namespace ${{ matrix.namespace }}
 
   deploy_pg_native:
