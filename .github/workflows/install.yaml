@@ -62,7 +62,7 @@ jobs:
 
       - name: Install Elastic Searcs
         run: |
-          helm upgrade -- install elastic-search \
+          helm upgrade --install elastic-search \
             --namespace default \
             --values ./elasticsearch.values.yaml \
             --wait \
