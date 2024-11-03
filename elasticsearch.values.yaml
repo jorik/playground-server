@@ -297,11 +297,11 @@ ingress:
   apiVersion: ""
   ## @param ingress.hostname Default host for the ingress record
   ##
-  hostname: kibana.wubwub.nl
+  hostname: "elasticsearch-hidden.wubwub.nl"
   ## @param ingress.path Default path for the ingress record
   ## NOTE: You may need to set this to '/*' in order to use this with ALB ingress controllers
   ##
-  path: /
+  path: /es
   ## @param ingress.annotations Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations.
   ## Use this parameter to set the required annotations for cert-manager, see
   ## ref: https://cert-manager.io/docs/usage/ingress/#supported-annotations
@@ -385,7 +385,16 @@ ingress:
   ##           port:
   ##             name: http
   ##
-  extraRules: []
+  extraRules:
+    - host: kibana.wubwub.nl
+      http:
+        path: /
+        backend:
+          service:
+            name: elastic-search-kibanasvc
+            port:
+              name: http
+  ##
 ## @section Master-elegible nodes parameters
 master:
   ## @param master.masterOnly Deploy the Elasticsearch master-elegible nodes as master-only nodes. Recommended for high-demand deployments.
@@ -772,7 +781,7 @@ master:
     whenScaled: Retain
     ## @param master.persistentVolumeClaimRetentionPolicy.whenDeleted Volume retention behavior that applies when the StatefulSet is deleted
     ##
-    whenDeleted: Retain   
+    whenDeleted: Retain
   ## Pods Service Account
   ## ref: https://kubernetes.io/docs/tasks/configure-pod-container/configure-service-account/
   ## @param master.serviceAccount.create Specifies whether a ServiceAccount should be created
@@ -809,7 +818,6 @@ coordinating:
 ingest:
   enabled: false
   replicaCount: 0
-
 
 metrics:
   ## @param metrics.enabled Enable prometheus exporter
@@ -981,4 +989,3 @@ kibana:
     hosts:
       - '{{ include "elasticsearch.service.name" . }}'
     port: '{{ include "elasticsearch.service.ports.restAPI" . }}'
-
