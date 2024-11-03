@@ -50,3 +50,22 @@ jobs:
             --timeout 5m \
             --atomic \
             cnpg/cloudnative-pg
+
+  deploy_elastic_search:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: azure/k8s-set-context@v4
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBECONFIG }}
+
+      - name: Install CloudNative PG
+        run: |
+          helm upgrade -- install elastic-search \
+            --namespace default \
+            --values ./elasticsearch.values.yaml \
+            --wait \
+            --atomic \
+          oci://registry-1.docker.io/bitnamicharts/elasticsearch
+      
